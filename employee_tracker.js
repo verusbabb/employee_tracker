@@ -16,7 +16,7 @@ const connection = mysql.createConnection({
 });
 
 const readEmployees = () => {
-    console.log('Selecting all products...\n');
+    console.log('Selecting all employees...\n');
     connection.query('SELECT * FROM employee', (err, res) => {
         if (err) throw err;
 
