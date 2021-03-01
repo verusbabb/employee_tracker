@@ -15,7 +15,7 @@ const connection = mysql.createConnection({
     database: 'employee_trackerDB',
 });
 
-const readEmployees = () => {
+const viewEmployees = () => {
     console.log('Selecting all employees...\n');
     connection.query('SELECT * FROM employee', (err, res) => {
         if (err) throw err;
@@ -25,11 +25,33 @@ const readEmployees = () => {
     });
 };
 
+const viewDepartments = () => {
+    console.log('Selecting all departments...\n');
+    connection.query('SELECT * FROM department', (err, res) => {
+        if (err) throw err;
+
+        console.table(res);
+        viewRoles();
+        // connection.end();
+    });
+};
+
+const viewRoles = () => {
+    console.log('Selecting all roles...\n');
+    connection.query('SELECT * FROM role', (err, res) => {
+        if (err) throw err;
+
+        console.table(res);
+        viewEmployees();
+        // connection.end();
+    });
+};
+
 // connect to the mysql server and sql database
 connection.connect((err) => {
     if (err) throw err;
     console.log(`connected as id ${connection.threadId}\n`);
-    readEmployees();
+    viewDepartments();
 
 });
 
