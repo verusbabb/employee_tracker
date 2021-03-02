@@ -29,9 +29,11 @@ CREATE TABLE employee (
   last_name VARCHAR(30) NOT NULL,
   role_id INTEGER NOT NULL,
   manager_id INTEGER,
+  department_id INTEGER,
   PRIMARY KEY (id),
   FOREIGN KEY (role_id) REFERENCES role(id),
-  FOREIGN KEY (manager_id) REFERENCES employee(id)
+  FOREIGN KEY (manager_id) REFERENCES employee(id),
+  FOREIGN KEY (department_id) REFERENCES department(id)
   );
   
   -- adding departments to department table --
@@ -76,29 +78,29 @@ VALUES ('Marketing Manager', 55000, 4);
 -- adding one director for each department and one manager for each department --
 -- manager works for director in each department --
 
-INSERT INTO employee (first_name, last_name, manager_id, role_id)
-VALUES ('Steve', 'Babb', null, 1);
+INSERT INTO employee (first_name, last_name, manager_id, role_id, department_id)
+VALUES ('Steve', 'Babb', null, 1, 1);
 
-INSERT INTO employee (first_name, last_name, manager_id, role_id)
-VALUES ('Adam', 'Babb', null, 2);
+INSERT INTO employee (first_name, last_name, manager_id, role_id, department_id)
+VALUES ('Adam', 'Babb', null, 2, 1);
 
-INSERT INTO employee (first_name, last_name, manager_id, role_id)
-VALUES ('Tom', 'Babb', null, 3);
+INSERT INTO employee (first_name, last_name, manager_id, role_id, department_id)
+VALUES ('Tom', 'Babb', null, 3, 2);
 
-INSERT INTO employee (first_name, last_name, manager_id, role_id)
-VALUES ('Claire', 'Babb', null, 4);
+INSERT INTO employee (first_name, last_name, manager_id, role_id, department_id)
+VALUES ('Claire', 'Babb', null, 4, 2);
 
-INSERT INTO employee (first_name, last_name, manager_id, role_id)
-VALUES ('Blair', 'Clark', 1, 1);
+INSERT INTO employee (first_name, last_name, manager_id, role_id, department_id)
+VALUES ('Blair', 'Clark', 1, 1, 1);
 
-INSERT INTO employee (first_name, last_name, manager_id, role_id)
-VALUES ('Mike', 'Beaudoin', 2, 2);
+INSERT INTO employee (first_name, last_name, manager_id, role_id, department_id)
+VALUES ('Mike', 'Beaudoin', 2, 2, 1);
 
-INSERT INTO employee (first_name, last_name, manager_id, role_id)
-VALUES ('Blake', 'Hawley', 3, 3);
+INSERT INTO employee (first_name, last_name, manager_id, role_id, department_id)
+VALUES ('Blake', 'Hawley', 3, 3, 2);
 
-INSERT INTO employee (first_name, last_name, manager_id, role_id)
-VALUES ('Tami', 'Nevels', 4, 4);
+INSERT INTO employee (first_name, last_name, manager_id, role_id, department_id)
+VALUES ('Tami', 'Nevels', 4, 4, 2);
 
 
 
