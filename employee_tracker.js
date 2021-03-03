@@ -31,7 +31,7 @@ const runInquiry = () => {
             choices: [
                 'View all employees',
                 'View all employees by department',
-                'View all employees by manager?',
+                'View all employees by manager',
                 'Add an employee',
                 'Remove an employee',
                 'Udate an employee',
@@ -50,7 +50,7 @@ const runInquiry = () => {
                     break;
 
 
-                case 'View all employees by manager?':
+                case 'View all employees by manager':
                     queriesSQL.viewEmployeesByManager(connection);
                     break;
 
