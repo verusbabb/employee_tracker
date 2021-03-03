@@ -29,7 +29,6 @@ CREATE TABLE employee (
   last_name VARCHAR(30) NOT NULL,
   role_id INTEGER NOT NULL,
   manager_id INTEGER,
-  manager_name VARCHAR(30),
   department_id INTEGER,
   PRIMARY KEY (id),
   FOREIGN KEY (role_id) REFERENCES role(id),
@@ -38,6 +37,9 @@ CREATE TABLE employee (
   );
   
   -- adding departments to department table --
+INSERT INTO department (department_name)
+VALUES ('C-Suite');
+
 INSERT INTO department (department_name)
 VALUES ('Engineering');
 
@@ -52,57 +54,62 @@ VALUES ('Marketing');
 
  -- adding roles within departments --
 INSERT INTO role (title, salary, department_id)
-VALUES ('Senior Engineer', 200000, 1);
+VALUES ('CEO', 300000, 1);
 
 INSERT INTO role (title, salary, department_id)
-VALUES ('Engineer', 85000, 1);
+VALUES ('VP Engineering', 200000, 2);
 
 INSERT INTO role (title, salary, department_id)
-VALUES ('Operations Director', 175000, 2);
+VALUES ('VP Operations', 175000, 3);
 
 INSERT INTO role (title, salary, department_id)
-VALUES ('Operations Manager', 90000, 2);
+VALUES ('VP Sales', 125000, 4);
 
 INSERT INTO role (title, salary, department_id)
-VALUES ('Sales Director', 125000, 3);
+VALUES ('VP Marketing', 125000, 5);
 
 INSERT INTO role (title, salary, department_id)
-VALUES ('Sales Manager', 65000, 3);
+VALUES ('Engineer', 85000, 2);
 
 INSERT INTO role (title, salary, department_id)
-VALUES ('Marketing Director', 125000, 4);
+VALUES ('Operations Manager', 90000, 3);
 
 INSERT INTO role (title, salary, department_id)
-VALUES ('Marketing Manager', 55000, 4);
+VALUES ('Sales Manager', 65000, 4);
+
+INSERT INTO role (title, salary, department_id)
+VALUES ('Marketing Manager', 55000, 5);
 
 -- adding dummy employees to employee table to start company with employees --
 -- adding one director for each department and one manager for each department --
 -- manager works for director in each department --
 
-INSERT INTO employee (first_name, last_name, manager_id, manager_name, role_id, department_id)
-VALUES ('Steve', 'Babb', 1, 'CEO',1, 1);
+INSERT INTO employee (first_name, last_name, manager_id, role_id, department_id)
+VALUES ('Steve', 'Babb', 1, 1, 1);
 
-INSERT INTO employee (first_name, last_name, manager_id, manager_name, role_id, department_id)
-VALUES ('Adam', 'Babb', 1, 'Steve Babb', 2, 1);
+INSERT INTO employee (first_name, last_name, manager_id, role_id, department_id)
+VALUES ('Christa', 'Babb', 1, 2, 2);
 
-INSERT INTO employee (first_name, last_name, manager_id, manager_name, role_id, department_id)
-VALUES ('Tom', 'Babb', 1, 'Steve Babb', 3, 2);
+INSERT INTO employee (first_name, last_name, manager_id, role_id, department_id)
+VALUES ('Adam', 'Babb', 1, 3, 3);
 
-INSERT INTO employee (first_name, last_name, manager_id, manager_name, role_id, department_id)
-VALUES ('Claire', 'Babb', 1, 'Steve Babb', 4, 2);
+INSERT INTO employee (first_name, last_name, manager_id, role_id, department_id)
+VALUES ('Tom', 'Babb', 1, 4, 4);
 
-INSERT INTO employee (first_name, last_name, manager_id, manager_name, role_id, department_id)
-VALUES ('Blair', 'Clark', 1, 'Steve Babb', 2, 1);
+INSERT INTO employee (first_name, last_name, manager_id, role_id, department_id)
+VALUES ('Claire', 'Babb', 1, 5, 5);
 
-INSERT INTO employee (first_name, last_name, manager_id, manager_name, role_id, department_id)
-VALUES ('Mike', 'Beaudoin', 2, 'Adam Babb', 2, 1);
+INSERT INTO employee (first_name, last_name, manager_id, role_id, department_id)
+VALUES ('Blair', 'Clark', 2, 6, 2);
 
-INSERT INTO employee (first_name, last_name, manager_id, manager_name, role_id, department_id)
-VALUES ('Blake', 'Hawley', 3, 'Tom Babb', 3, 2);
+INSERT INTO employee (first_name, last_name, manager_id, role_id, department_id)
+VALUES ('Mike', 'Beaudoin', 3, 7, 3);
 
-INSERT INTO employee (first_name, last_name, manager_id, manager_name, role_id, department_id)
-VALUES ('Tami', 'Nevels', 4, 'Claire Babb', 4, 2);
+INSERT INTO employee (first_name, last_name, manager_id, role_id, department_id)
+VALUES ('Blake', 'Hawley', 4, 8, 4);
 
+INSERT INTO employee (first_name, last_name, manager_id, role_id, department_id)
+VALUES ('Tami', 'Nevels', 5, 9, 5);
 
 
 
