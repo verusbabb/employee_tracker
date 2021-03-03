@@ -1,5 +1,7 @@
 const cTable = require('console.table');
 const inquirer = require('inquirer');
+const Department = require('../lib/department');
+const Role = require('../lib/role');
 
 //build and display table of employees
 const viewEmployees = (connection) => {
@@ -81,14 +83,15 @@ const viewEmployeesByManager = (connection) => {
 const addDepartment = (connection) => {
     inquirer
         .prompt({
-            name: 'newDepartment',
+            name: 'newDepartmentName',
             type: 'input',
             message: 'What is the name of the NEW department the company should waste money on?',
         })
         .then((answer) => {
-            console.log(answer.newDepartment);
+            let newDepartment = new Department(answer.newDepartmentName)
+            console.log(newDepartment.name);
             connection.query(
-                'INSERT INTO department (department_name) VALUES (?)', answer.newDepartment,
+                'INSERT INTO department (department_name) VALUES (?)', newDepartment.name,
                 (err) => {
                     if (err) throw err;
                     console.log('Your new department was created successfully!');
@@ -128,14 +131,11 @@ const addRole = (connection) => {
             }
         ])
         .then((answer) => {
-            console.log(answer.title, answer.salary, answer.department);
-            const query = 'INSERT INTO role (title, salary, department_id) VALUES ?';
+            let newRole = new Role(answer.title, answer.salary, answer.department)
+            console.log(newRole.title, newRole.salary, newRole.department);
+            // const query = 'INSERT INTO role (title, salary, department_id) VALUES ?';
 
-            // connection.query(query, {
-            //     title: answer.title,
-            //     salarly: answer.salarly,
-            //     department_id: answer.department
-            // },
+            // connection.query(query, [newRole.title, newRole.salary, newRole.department],
             //     (err, res) => {
             //         if (err) throw err;
 
