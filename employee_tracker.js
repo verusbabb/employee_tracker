@@ -30,13 +30,14 @@ const runInquiry = () => {
             message: 'What would you like to do?',
             choices: [
                 'View all employees',
-                'View all employees by department',
-                'View all employees by manager',
+                'View all roles',
+                'View all departments',
+                'View all employees by select department',
+                'View all employees by select manager',
                 'Add an employee',
-                'Remove an employee',
-                'Udate an employee',
                 'Update an employee role',
-                'Update an employee manager'
+                'Add a department',
+                'Add a role'
             ],
         })
         .then((answer) => {
@@ -45,12 +46,20 @@ const runInquiry = () => {
                     queriesSQL.viewEmployees(connection);
                     break;
 
-                case 'View all employees by department':
-                    queriesSQL.viewEmployeesByDepartment(connection);
+                case 'View all roles':
+                    queriesSQL.viewRoles(connection);
                     break;
 
 
-                case 'View all employees by manager':
+                case 'View all departments':
+                    queriesSQL.viewDepartments(connection);
+                    break;
+
+                case 'View all employees by select department':
+                    queriesSQL.viewEmployeesByDepartment(connection);
+                    break;
+
+                case 'View all employees by select manager':
                     queriesSQL.viewEmployeesByManager(connection);
                     break;
 
@@ -58,20 +67,16 @@ const runInquiry = () => {
                     queriesSQL.addEmployee(connection);
                     break;
 
-                case 'Remove an employee':
-                    queriesSQL.removeEmployee(connection);
-                    break;
-
-                case 'Udate an employee':
-                    queriesSQL.updateEmployee(connection);
-                    break;
-
-                case 'Update an employee roles':
+                case 'Update an employee role':
                     queriesSQL.updateEmployeeRole(connection);
                     break;
 
-                case 'Update an employee manager':
-                    queriesSQL.updateEmployeeManager(connection);
+                case 'Add a department':
+                    queriesSQL.addDepartment(connection);
+                    break;
+
+                case 'Add a role':
+                    queriesSQL.addRole(connection);
                     break;
             }
         });
