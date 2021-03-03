@@ -15,45 +15,65 @@ const connection = mysql.createConnection({
     database: 'employee_trackerDB',
 });
 
-
-// const viewEmployees = () => {
-//     console.log('Selecting all employees...\n');
-//     connection.query('SELECT * FROM employee', (err, res) => {
-//         if (err) throw err;
-
-//         console.table(res);
-//         connection.end();
-//     });
-// };
-
-// const viewDepartments = () => {
-//     console.log('Selecting all departments...\n');
-//     connection.query('SELECT * FROM department', (err, res) => {
-//         if (err) throw err;
-
-//         console.table(res);
-//         viewRoles();
-//         // connection.end();
-//     });
-// };
-
-// const viewRoles = () => {
-//     console.log('Selecting all roles...\n');
-//     connection.query('SELECT * FROM role', (err, res) => {
-//         if (err) throw err;
-
-//         console.table(res);
-//         viewEmployees();
-//         // connection.end();
-//     });
-// };
-
-// connect to the mysql server and sql database
 connection.connect((err) => {
     if (err) throw err;
     console.log(`connected as id ${connection.threadId}\n`);
-    queriesSQL.viewDepartments(connection);
-
+    runInquiry();
 
 });
+
+const runInquiry = () => {
+    inquirer
+        .prompt({
+            name: 'action',
+            type: 'rawlist',
+            message: 'What would you like to do?',
+            choices: [
+                'View all employees',
+                'View all employees by department',
+                'View all employees by manager?',
+                'Add an employee',
+                'Remove an employee',
+                'Udate an employee',
+                'Update an employee role',
+                'Update an employee manager'
+            ],
+        })
+        .then((answer) => {
+            switch (answer.action) {
+                case 'View all employees':
+                    queriesSQL.viewEmployees(connection);
+                    break;
+
+                case 'View all employees by department':
+                    queriesSQL.viewEmployeesByDepartment(connection);
+                    break;
+
+
+                case 'View all employees by manager?':
+                    queriesSQL.viewEmployeesByManager(connection);
+                    break;
+
+                case 'Add an employee':
+                    queriesSQL.addEmployee(connection);
+                    break;
+
+                case 'Remove an employee':
+                    queriesSQL.removeEmployee(connection);
+                    break;
+
+                case 'Udate an employee':
+                    queriesSQL.updateEmployee(connection);
+                    break;
+
+                case 'Update an employee roles':
+                    queriesSQL.updateEmployeeRole(connection);
+                    break;
+
+                case 'Update an employee manager':
+                    queriesSQL.updateEmployeeManager(connection);
+                    break;
+            }
+        });
+};
 
