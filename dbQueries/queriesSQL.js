@@ -133,18 +133,22 @@ const addRole = (connection) => {
         .then((answer) => {
             let newRole = new Role(answer.title, answer.salary, answer.department)
             console.log(newRole.title, newRole.salary, newRole.department);
-            // const query = 'INSERT INTO role (title, salary, department_id) VALUES ?';
+            const query = 'INSERT INTO role SET ?';
 
-            // connection.query(query, [newRole.title, newRole.salary, newRole.department],
-            //     (err, res) => {
-            //         if (err) throw err;
+            connection.query(query, {
+                title: newRole.title,
+                salary: newRole.salary,
+                department_id: newRole.department
+            },
+                (err, res) => {
+                    if (err) throw err;
 
-            //         console.log('Your new role was created successfully!');
-            //         console.table(res);
-            //         // re-prompt the user for if they want to bid or post
-            //         viewRoles(connection);
-            //     }
-            // );
+                    console.log('Your new role was created successfully!');
+                    console.table(res);
+                    // re-prompt the user for if they want to bid or post
+                    listRoles(connection);
+                }
+            );
         });
 };
 
