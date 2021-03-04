@@ -1,7 +1,7 @@
 const mysql = require('mysql');
 const inquirer = require('inquirer');
 const cTable = require('console.table');
-const queriesSQL = require('./dbQueries/queriesSQL');
+const sqlQueries = require('./dbQueries/sqlQueries');
 
 // create the connection information for the sql database
 const connection = mysql.createConnection({
@@ -43,40 +43,40 @@ const runInquiry = () => {
         .then((answer) => {
             switch (answer.action) {
                 case 'View all employees':
-                    queriesSQL.viewEmployees(connection);
+                    sqlQueries.viewEmployees(connection);
                     break;
 
                 case 'View all roles':
-                    queriesSQL.viewRoles(connection);
+                    sqlQueries.viewRoles(connection);
                     break;
 
 
                 case 'View all departments':
-                    queriesSQL.viewDepartments(connection);
+                    sqlQueries.viewDepartments(connection);
                     break;
 
                 case 'View all employees by select department':
-                    queriesSQL.viewEmployeesByDepartment(connection);
+                    sqlQueries.viewEmployeesByDepartment(connection);
                     break;
 
                 case 'View all employees by select manager':
-                    queriesSQL.viewEmployeesByManager(connection);
+                    sqlQueries.viewEmployeesByManager(connection);
                     break;
 
                 case 'Add an employee':
-                    queriesSQL.addEmployee(connection);
+                    sqlQueries.addEmployee(connection);
                     break;
 
                 case 'Update an employee role':
-                    queriesSQL.updateEmployeeRole(connection);
+                    sqlQueries.updateRole(connection);
                     break;
 
                 case 'Add a department':
-                    queriesSQL.addDepartment(connection);
+                    sqlQueries.addDepartment(connection);
                     break;
 
                 case 'Add a role':
-                    queriesSQL.addRole(connection);
+                    sqlQueries.addRole(connection);
                     break;
             }
         });
