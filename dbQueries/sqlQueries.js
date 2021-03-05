@@ -4,9 +4,11 @@ const Department = require('../lib/department');
 const Role = require('../lib/role');
 const Employee = require('../lib/employee');
 
+const quitApplication = (connection) => {
+    connection.end()
+}
 //build and display table of employees
 const viewEmployees = (connection, cb) => {
-    console.log('Selecting all employees...\n');
     let query = "SELECT employee.id, employee.first_name, employee.last_name, role.title, role.salary, department.department_name, CONCAT(e.first_name, ' ' ,e.last_name) AS Manager ";
     query +=
         'FROM employee ';
@@ -29,8 +31,31 @@ const viewEmployees = (connection, cb) => {
     })
 };
 
+const managerChoices = (connection, cb) => {
+    let query = "SELECT employee.id, employee.first_name, employee.last_name, role.title ";
+    query +=
+        'FROM employee ';
+    query +=
+        'INNER JOIN role on role.id = employee.role_id ';
+    query +=
+        'INNER JOIN department on department.id = role.department_id ';
+    query +=
+        'LEFT JOIN employee e on employee.manager_id = e.id ';
+    query +=
+        'ORDER BY employee.id';
+    connection.query(query, (err, res) => {
+        if (err) throw err;
+        console.log('\nHere is a list of all employees\n');
+        console.table(res);
+        if (cb) {
+            cb()
+        }
+        // connection.end();
+    })
+};
+
 //build and display all departments and employees within
-const viewDepartments = (connection) => {
+const viewDepartments = (connection, cb) => {
     let query = 'SELECT department.department_name AS Department, employee.first_name, employee.last_name ';
     query +=
         'FROM employee JOIN role ON employee.role_id = role.id ';
@@ -41,28 +66,34 @@ const viewDepartments = (connection) => {
         if (err) throw err;
         console.log('\nHere is a list of all company departments\n')
         console.table(res);
+        if (cb) {
+            cb()
+        }
         // connection.end();
     })
 }
 
 //build and display table with employees showing title
-const viewRoles = (connection) => {
-    let query = 'SELECT employee.id, employee.first_name, employee.last_name, role.title AS Title ';
+const viewRoles = (connection, cb) => {
+    let query = 'SELECT role.title AS Title, employee.id, employee.first_name, employee.last_name ';
     query +=
         'FROM employee ';
     query +=
         'JOIN role ON employee.role_id = role.id';
     connection.query(query, (err, res) => {
         if (err) throw err;
-        console.log('\nHere is a list of all roles in the company\n')
+        console.log('\nHere is a list of all roles in the company (and employees in those roles)\n')
         console.table(res);
+        if (cb) {
+            cb()
+        }
         // connection.end();
     })
 }
 
 //build and display a table of employees sorted by department
-const viewEmployeesByDepartment = (connection) => {
-    console.log('Selecting all employees by departments...\n');
+const viewEmployeesByDepartment = (connection, cb) => {
+    console.log('Displaying all employees, organized by department...\n');
     let query = 'SELECT first_name, last_name, title, department_name ';
     query +=
         'FROM employee ';
@@ -76,12 +107,16 @@ const viewEmployeesByDepartment = (connection) => {
         if (err) throw err;
         console.log('\nHere is a list of all employees organized by department\n')
         console.table(res);
+        if (cb) {
+            cb()
+        }
         // connection.end();
     });
 };
 
 //build and display a table of employees for a given manager
-const viewEmployeesByManager = (connection) => {
+const viewEmployeesByManager = (connection, cb) => {
+    console.log('\nHere is a list of current managers to choose from\n')
     let query = "SELECT employee.manager_id, CONCAT(e.first_name, ' ' ,e.last_name) AS Manager ";
     query +=
         'FROM employee ';
@@ -107,7 +142,9 @@ const viewEmployeesByManager = (connection) => {
                     res.forEach((item) => {
                         managerArray.push(item.manager_id, item.Manager);
                     })
+                    console.log('\n');
                     return managerArray
+
                 },
                 message: 'Choose a manager by their number (** enter manager NUMBER **)?',
             })
@@ -124,6 +161,9 @@ const viewEmployeesByManager = (connection) => {
                     if (err) throw err;
                     console.log('\nShowing all employees for selected manager...\n');
                     console.table(res);
+                    if (cb) {
+                        cb()
+                    }
 
                 })
             });
@@ -131,7 +171,7 @@ const viewEmployeesByManager = (connection) => {
 };
 
 //create a new department
-const addDepartment = (connection) => {
+const addDepartment = (connection, cb) => {
     inquirer
         .prompt({
             name: 'newDepartmentName',
@@ -147,32 +187,38 @@ const addDepartment = (connection) => {
                     if (err) throw err;
                     console.log('\nYour new department was created successfully!\n');
                     // re-prompt the user for if they want to bid or post
-                    listDepartments(connection);
+                    listDepartments(connection, cb);
                 }
             );
         });
 };
 
 //list all departments
-const listDepartments = (connection) => {
+const listDepartments = (connection, cb) => {
     connection.query('SELECT * FROM department', (err, res) => {
         if (err) throw err;
         console.log('\nHere is a list of all department\n');
         console.table(res);
+        if (cb) {
+            cb()
+        }
     });
 };
 
 //list all roles, including id, title, and salary
-const listRoles = (connection) => {
+const listRoles = (connection, cb) => {
     connection.query('SELECT id, title, salary FROM role', (err, res) => {
         if (err) throw err;
         console.log('\nHere are the current roles in the company\n');
         console.table(res);
+        if (cb) {
+            cb()
+        }
     });
 };
 
 //add a new role to company
-const addRole = (connection) => {
+const addRole = (connection, cb) => {
     inquirer
         .prompt([
             {
@@ -208,14 +254,17 @@ const addRole = (connection) => {
                     console.log('\nYour new role was created successfully!\n');
                     console.table(res);
                     // re-prompt the user for if they want to bid or post
-                    listRoles(connection);
+                    listRoles(connection, cb);
+                    if (cb) {
+                        cb()
+                    }
                 }
             );
         });
 };
 
 //update an employee's role
-const updateRole = (connection) => {
+const updateRole = (connection, cb) => {
     inquirer
         .prompt([
             {
@@ -233,8 +282,8 @@ const updateRole = (connection) => {
             {
                 name: 'updatedManager',
                 type: 'number',
-                choices() { viewEmployees(connection) },
-                message: 'Enter the name of the new manager\n'
+                choices() { managerChoices(connection) },
+                message: 'Enter the id of the employee you want to be their manager\n'
             },
         ])
         .then((answer) => {
@@ -252,10 +301,13 @@ const updateRole = (connection) => {
 
                     console.log("\nThe employee's role has been updated!\n");
                     console.table(res);
-                    viewEmployees(connection);
+                    viewEmployees(connection, cb);
+                    if (cb) {
+                        cb()
+                    }
                 }
             );
         });
 }
 
-module.exports = { viewEmployees, viewDepartments, viewRoles, viewEmployeesByDepartment, viewEmployeesByManager, addDepartment, addRole, listDepartments, updateRole };
+module.exports = { viewEmployees, viewDepartments, viewRoles, viewEmployeesByDepartment, viewEmployeesByManager, addDepartment, addRole, listDepartments, updateRole, quitApplication };

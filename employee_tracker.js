@@ -32,12 +32,13 @@ const runInquiry = () => {
                 'View all employees',
                 'View all roles',
                 'View all departments',
-                'View all employees by select department',
+                'View all employees by department',
                 'View all employees by select manager',
                 'Add an employee',
                 'Update an employee role',
                 'Add a department',
-                'Add a role'
+                'Add a role',
+                'Quit application'
             ],
         })
         .then((answer) => {
@@ -47,35 +48,39 @@ const runInquiry = () => {
                     break;
 
                 case 'View all roles':
-                    sqlQueries.viewRoles(connection);
+                    sqlQueries.viewRoles(connection, runInquiry);
                     break;
 
                 case 'View all departments':
-                    sqlQueries.viewDepartments(connection);
+                    sqlQueries.listDepartments(connection, runInquiry);
                     break;
 
-                case 'View all employees by select department':
-                    sqlQueries.viewEmployeesByDepartment(connection);
+                case 'View all employees by department':
+                    sqlQueries.viewEmployeesByDepartment(connection, runInquiry);
                     break;
 
                 case 'View all employees by select manager':
-                    sqlQueries.viewEmployeesByManager(connection);
+                    sqlQueries.viewEmployeesByManager(connection, runInquiry);
                     break;
 
                 case 'Add an employee':
-                    sqlQueries.addEmployee(connection);
+                    sqlQueries.addEmployee(connection, runInquiry);
                     break;
 
                 case 'Update an employee role':
-                    sqlQueries.updateRole(connection);
+                    sqlQueries.updateRole(connection, runInquiry);
                     break;
 
                 case 'Add a department':
-                    sqlQueries.addDepartment(connection);
+                    sqlQueries.addDepartment(connection, runInquiry);
                     break;
 
                 case 'Add a role':
-                    sqlQueries.addRole(connection);
+                    sqlQueries.addRole(connection, runInquiry);
+                    break;
+
+                case 'Quit application':
+                    sqlQueries.quitApplication(connection)
                     break;
             }
         });
