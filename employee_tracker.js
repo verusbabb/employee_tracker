@@ -43,13 +43,12 @@ const runInquiry = () => {
         .then((answer) => {
             switch (answer.action) {
                 case 'View all employees':
-                    sqlQueries.viewEmployees(connection);
+                    sqlQueries.viewEmployees(connection, runInquiry);
                     break;
 
                 case 'View all roles':
                     sqlQueries.viewRoles(connection);
                     break;
-
 
                 case 'View all departments':
                     sqlQueries.viewDepartments(connection);
@@ -81,4 +80,5 @@ const runInquiry = () => {
             }
         });
 };
+
 

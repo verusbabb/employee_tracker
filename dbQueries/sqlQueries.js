@@ -5,7 +5,7 @@ const Role = require('../lib/role');
 const Employee = require('../lib/employee');
 
 //build and display table of employees
-const viewEmployees = (connection) => {
+const viewEmployees = (connection, cb) => {
     console.log('Selecting all employees...\n');
     let query = "SELECT employee.id, employee.first_name, employee.last_name, role.title, role.salary, department.department_name, CONCAT(e.first_name, ' ' ,e.last_name) AS Manager ";
     query +=
@@ -22,6 +22,9 @@ const viewEmployees = (connection) => {
         if (err) throw err;
         console.log('\nHere is a list of all employees\n');
         console.table(res);
+        if (cb) {
+            cb()
+        }
         // connection.end();
     })
 };
@@ -165,7 +168,6 @@ const listRoles = (connection) => {
         if (err) throw err;
         console.log('\nHere are the current roles in the company\n');
         console.table(res);
-
     });
 };
 

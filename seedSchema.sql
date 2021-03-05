@@ -81,8 +81,6 @@ INSERT INTO role (title, salary, department_id)
 VALUES ('Marketing Manager', 55000, 5);
 
 -- adding dummy employees to employee table to start company with employees --
--- adding one director for each department and one manager for each department --
--- manager works for director in each department --
 
 INSERT INTO employee (first_name, last_name, manager_id, role_id, department_id)
 VALUES ('Steve', 'Babb', 1, 1, 1);
@@ -110,7 +108,6 @@ VALUES ('Blake', 'Hawley', 4, 8, 4);
 
 INSERT INTO employee (first_name, last_name, manager_id, role_id, department_id)
 VALUES ('Tami', 'Nevels', 5, 9, 5);
-
 
 
   
