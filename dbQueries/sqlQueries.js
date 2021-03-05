@@ -7,30 +7,51 @@ const Employee = require('../lib/employee');
 //build and display table of employees
 const viewEmployees = (connection) => {
     console.log('Selecting all employees...\n');
-    const query = "SELECT employee.id, employee.first_name, employee.last_name, role.title, role.salary, department.department_name, CONCAT(e.first_name, ' ' ,e.last_name) AS Manager FROM employee INNER JOIN role on role.id = employee.role_id INNER JOIN department on department.id = role.department_id left join employee e on employee.manager_id = e.id ORDER BY employee.id";
+    let query = "SELECT employee.id, employee.first_name, employee.last_name, role.title, role.salary, department.department_name, CONCAT(e.first_name, ' ' ,e.last_name) AS Manager ";
+    query +=
+        'FROM employee ';
+    query +=
+        'INNER JOIN role on role.id = employee.role_id ';
+    query +=
+        'INNER JOIN department on department.id = role.department_id ';
+    query +=
+        'LEFT JOIN employee e on employee.manager_id = e.id ';
+    query +=
+        'ORDER BY employee.id';
     connection.query(query, (err, res) => {
         if (err) throw err;
-
+        console.log('\nHere is a list of all employees\n');
         console.table(res);
         // connection.end();
     })
 };
 
+//build and display all departments and employees within
 const viewDepartments = (connection) => {
-    const query = "SELECT employee.first_name, employee.last_name, department.department_name AS Department FROM employee JOIN role ON employee.role_id = role.id JOIN department ON role.department_id = department.id";
+    let query = 'SELECT department.department_name AS Department, employee.first_name, employee.last_name ';
+    query +=
+        'FROM employee JOIN role ON employee.role_id = role.id ';
+    query +=
+        'JOIN department ON role.department_id = department.id';
+
     connection.query(query, (err, res) => {
         if (err) throw err;
-
+        console.log('\nHere is a list of all company departments\n')
         console.table(res);
         // connection.end();
     })
 }
 
+//build and display table with employees showing title
 const viewRoles = (connection) => {
-    const query = "SELECT employee.id, employee.first_name, employee.last_name, role.title AS Title FROM employee JOIN role ON employee.role_id = role.id";
+    let query = 'SELECT employee.id, employee.first_name, employee.last_name, role.title AS Title ';
+    query +=
+        'FROM employee ';
+    query +=
+        'JOIN role ON employee.role_id = role.id';
     connection.query(query, (err, res) => {
         if (err) throw err;
-
+        console.log('\nHere is a list of all roles in the company\n')
         console.table(res);
         // connection.end();
     })
@@ -39,9 +60,18 @@ const viewRoles = (connection) => {
 //build and display a table of employees sorted by department
 const viewEmployeesByDepartment = (connection) => {
     console.log('Selecting all employees by departments...\n');
-    const query = 'SELECT first_name, last_name, title, department_name FROM employee INNER JOIN role ON role.id = employee.role_id INNER JOIN department ON department.id = employee.department_id ORDER BY department_name';
+    let query = 'SELECT first_name, last_name, title, department_name ';
+    query +=
+        'FROM employee ';
+    query +=
+        'INNER JOIN role ON role.id = employee.role_id ';
+    query +=
+        'INNER JOIN department ON department.id = employee.department_id ';
+    query +=
+        'ORDER BY department_name';
     connection.query(query, (err, res) => {
         if (err) throw err;
+        console.log('\nHere is a list of all employees organized by department\n')
         console.table(res);
         // connection.end();
     });
@@ -49,7 +79,17 @@ const viewEmployeesByDepartment = (connection) => {
 
 //build and display a table of employees for a given manager
 const viewEmployeesByManager = (connection) => {
-    const query = "SELECT employee.manager_id, CONCAT(e.first_name, ' ' ,e.last_name) AS Manager FROM employee INNER JOIN role on role.id = employee.role_id INNER JOIN department on department.id = role.department_id left join employee e on employee.manager_id = e.id GROUP BY employee.manager_id ORDER BY employee.id";
+    let query = "SELECT employee.manager_id, CONCAT(e.first_name, ' ' ,e.last_name) AS Manager ";
+    query +=
+        'FROM employee ';
+    query +=
+        'INNER JOIN role on role.id = employee.role_id ';
+    query +=
+        'INNER JOIN department on department.id = role.department_id ';
+    query +=
+        'LEFT JOIN employee e on employee.manager_id = e.id ';
+    query +=
+        'GROUP BY employee.manager_id';
     connection.query(query, (err, res) => {
         if (err) throw err;
         for (i = 0; i < res.length; i++) {
@@ -69,7 +109,13 @@ const viewEmployeesByManager = (connection) => {
                 message: 'Choose a manager by their number (** enter manager NUMBER **)?',
             })
             .then((answer) => {
-                const query = "SELECT employee.first_name, employee.last_name, role.title, role.salary, department.department_name, CONCAT(e.first_name, ' ' ,e.last_name) AS Manager FROM employee INNER JOIN role on role.id = employee.role_id INNER JOIN department on department.id = role.department_id left join employee e on employee.manager_id = e.id WHERE employee.manager_id = ?";
+                let query = "SELECT employee.first_name, employee.last_name, role.title, role.salary, department.department_name, CONCAT(e.first_name, ' ' ,e.last_name) AS Manager FROM employee ";
+                query +=
+                    'INNER JOIN role on role.id = employee.role_id ';
+                query +=
+                    'INNER JOIN department on department.id = role.department_id left join employee e on employee.manager_id = e.id ';
+                query +=
+                    'WHERE employee.manager_id = ?';
 
                 connection.query(query, answer.action, (err, res) => {
                     if (err) throw err;
@@ -81,12 +127,13 @@ const viewEmployeesByManager = (connection) => {
     });
 };
 
+//create a new department
 const addDepartment = (connection) => {
     inquirer
         .prompt({
             name: 'newDepartmentName',
             type: 'input',
-            message: 'What is the name of the NEW department the company should waste money on?',
+            message: 'What is the name of the NEW department you want to add?',
         })
         .then((answer) => {
             let newDepartment = new Department(answer.newDepartmentName)
@@ -95,7 +142,7 @@ const addDepartment = (connection) => {
                 'INSERT INTO department (department_name) VALUES (?)', newDepartment.name,
                 (err) => {
                     if (err) throw err;
-                    console.log('Your new department was created successfully!');
+                    console.log('\nYour new department was created successfully!\n');
                     // re-prompt the user for if they want to bid or post
                     listDepartments(connection);
                 }
@@ -103,24 +150,26 @@ const addDepartment = (connection) => {
         });
 };
 
+//list all departments
 const listDepartments = (connection) => {
     connection.query('SELECT * FROM department', (err, res) => {
         if (err) throw err;
-        console.log('Here is an updated department list!');
+        console.log('\nHere is a list of all department\n');
         console.table(res);
-
     });
 };
 
+//list all roles, including id, title, and salary
 const listRoles = (connection) => {
     connection.query('SELECT id, title, salary FROM role', (err, res) => {
         if (err) throw err;
-        console.log('Here are the current roles in the company');
+        console.log('\nHere are the current roles in the company\n');
         console.table(res);
 
     });
 };
 
+//add a new role to company
 const addRole = (connection) => {
     inquirer
         .prompt([
@@ -154,7 +203,7 @@ const addRole = (connection) => {
                 (err, res) => {
                     if (err) throw err;
 
-                    console.log('Your new role was created successfully!');
+                    console.log('\nYour new role was created successfully!\n');
                     console.table(res);
                     // re-prompt the user for if they want to bid or post
                     listRoles(connection);
@@ -163,8 +212,8 @@ const addRole = (connection) => {
         });
 };
 
+//update an employee's role
 const updateRole = (connection) => {
-
     inquirer
         .prompt([
             {
@@ -187,9 +236,7 @@ const updateRole = (connection) => {
             },
         ])
         .then((answer) => {
-            console.log(answer.updatedRole, answer.employee);
             const query = 'UPDATE employee SET ? WHERE ?';
-
             connection.query(query,
                 [{
                     role_id: answer.updatedRole,
@@ -201,33 +248,12 @@ const updateRole = (connection) => {
                 (err, res) => {
                     if (err) throw err;
 
-                    console.log("The employee's role has been updated!");
+                    console.log("\nThe employee's role has been updated!\n");
                     console.table(res);
                     viewEmployees(connection);
                 }
             );
-            // const query = 'UPDATE employee SET role_id = ? WHERE id = ?';
-
-            // connection.query(query,
-            //     [answer.updatedRole, answer.employee],
-            //     (err, res) => {
-            //         if (err) throw err;
-
-            //         console.log("The employee's role has been updated!");
-            //         console.table(res);
-            //         viewEmployees(connection);
-            //     }
-            // );
         });
 }
-
-// const listRoles = (connection) => {
-//     connection.query('SELECT title FROM role', (err, res) => {
-//         if (err) throw err;
-//         console.log('These are now the company departments');
-//         console.table(res);
-//         connection.end()
-//     });
-// };
 
 module.exports = { viewEmployees, viewDepartments, viewRoles, viewEmployeesByDepartment, viewEmployeesByManager, addDepartment, addRole, listDepartments, updateRole };
