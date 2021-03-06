@@ -27,7 +27,7 @@ const viewEmployees = (connection, cb) => {
         if (cb) {
             cb()
         }
-        // connection.end();
+
     })
 };
 
@@ -50,7 +50,7 @@ const managerChoices = (connection, cb) => {
         if (cb) {
             cb()
         }
-        // connection.end();
+
     })
 };
 
@@ -69,7 +69,7 @@ const viewDepartments = (connection, cb) => {
         if (cb) {
             cb()
         }
-        // connection.end();
+
     })
 }
 
@@ -87,7 +87,7 @@ const viewRoles = (connection, cb) => {
         if (cb) {
             cb()
         }
-        // connection.end();
+
     })
 }
 
@@ -110,7 +110,7 @@ const viewEmployeesByDepartment = (connection, cb) => {
         if (cb) {
             cb()
         }
-        // connection.end();
+
     });
 };
 
@@ -186,7 +186,7 @@ const addDepartment = (connection, cb) => {
                 (err) => {
                     if (err) throw err;
                     console.log('\nYour new department was created successfully!\n');
-                    // re-prompt the user for if they want to bid or post
+
                     listDepartments(connection, cb);
                 }
             );
@@ -252,11 +252,9 @@ const addRole = (connection, cb) => {
 
                     console.log('\nYour new role was created successfully!\n');
                     console.table(res);
-                    // re-prompt the user for if they want to bid or post
+
                     listRoles(connection, cb);
-                    // if (cb) {
-                    //     cb()
-                    // }
+
                 }
             );
         });
@@ -358,11 +356,9 @@ const addEmployee = (connection, cb) => {
 
                     console.log('\nYour new employee has been added!\n');
                     console.table(res);
-                    // re-prompt the user for if they want to bid or post
+
                     viewEmployees(connection, cb);
-                    // if (cb) {
-                    //     cb()
-                    // }
+
                 }
             );
         });
