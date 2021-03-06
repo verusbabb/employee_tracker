@@ -5,7 +5,7 @@ const Role = require('../lib/role');
 const Employee = require('../lib/employee');
 
 const quitApplication = (connection) => {
-    connection.end()
+    connection.end(connection)
 }
 //build and display table of employees
 const viewEmployees = (connection, cb) => {
@@ -240,7 +240,6 @@ const addRole = (connection, cb) => {
         ])
         .then((answer) => {
             let newRole = new Role(answer.title, answer.salary, answer.department)
-            console.log(newRole.title, newRole.salary, newRole.department);
             const query = 'INSERT INTO role SET ?';
 
             connection.query(query, {
@@ -255,9 +254,9 @@ const addRole = (connection, cb) => {
                     console.table(res);
                     // re-prompt the user for if they want to bid or post
                     listRoles(connection, cb);
-                    if (cb) {
-                        cb()
-                    }
+                    // if (cb) {
+                    //     cb()
+                    // }
                 }
             );
         });
@@ -345,8 +344,6 @@ const addEmployee = (connection, cb) => {
         ])
         .then((answer) => {
             let newEmployee = new Employee(answer.firstName, answer.lastName, answer.roleID, answer.managerID, answer.departmentID);
-            console.log(newEmployee);
-            console.log(newEmployee.first_name, newEmployee.last_name, newEmployee.role_id, newEmployee.manager_id, newEmployee.department_id);
             const query = 'INSERT INTO employee SET ?';
 
             connection.query(query, {
@@ -363,9 +360,9 @@ const addEmployee = (connection, cb) => {
                     console.table(res);
                     // re-prompt the user for if they want to bid or post
                     viewEmployees(connection, cb);
-                    if (cb) {
-                        cb()
-                    }
+                    // if (cb) {
+                    //     cb()
+                    // }
                 }
             );
         });
