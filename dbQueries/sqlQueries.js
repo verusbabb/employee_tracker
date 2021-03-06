@@ -310,4 +310,65 @@ const updateRole = (connection, cb) => {
         });
 }
 
-module.exports = { viewEmployees, viewDepartments, viewRoles, viewEmployeesByDepartment, viewEmployeesByManager, addDepartment, addRole, listDepartments, updateRole, quitApplication };
+//add a new role to company
+const addEmployee = (connection, cb) => {
+    inquirer
+        .prompt([
+            {
+                name: 'firstName',
+                type: 'input',
+                message: "What is the first name of the NEW employee you want to create?"
+            },
+            {
+                name: 'lastName',
+                type: 'input',
+                message: "What is the last name of the NEW employee you want to create?"
+            },
+            {
+                name: 'roleID',
+                type: 'number',
+                choices() { listRoles(connection) },
+                message: 'Enter the ID# of the employee role you want to assign to this employee'
+            },
+            {
+                name: 'managerID',
+                type: 'number',
+                choices() { managerChoices(connection) },
+                message: 'Enter the ID# of the person you want to manage this employee'
+            },
+            {
+                name: 'departmentID',
+                type: 'number',
+                choices() { listDepartments(connection) },
+                message: 'Enter the ID# of the department you would like this role to be in'
+            }
+        ])
+        .then((answer) => {
+            let newEmployee = new Employee(answer.firstName, answer.lastName, answer.roleID, answer.managerID, answer.departmentID);
+            console.log(newEmployee);
+            console.log(newEmployee.first_name, newEmployee.last_name, newEmployee.role_id, newEmployee.manager_id, newEmployee.department_id);
+            const query = 'INSERT INTO employee SET ?';
+
+            connection.query(query, {
+                first_name: newEmployee.first_name,
+                last_name: newEmployee.last_name,
+                role_id: newEmployee.role_id,
+                manager_id: newEmployee.manager_id,
+                department_id: newEmployee.department_id
+            },
+                (err, res) => {
+                    if (err) throw err;
+
+                    console.log('\nYour new employee has been added!\n');
+                    console.table(res);
+                    // re-prompt the user for if they want to bid or post
+                    viewEmployees(connection, cb);
+                    if (cb) {
+                        cb()
+                    }
+                }
+            );
+        });
+};
+
+module.exports = { viewEmployees, viewDepartments, viewRoles, viewEmployeesByDepartment, viewEmployeesByManager, addDepartment, addRole, listDepartments, updateRole, quitApplication, addEmployee };

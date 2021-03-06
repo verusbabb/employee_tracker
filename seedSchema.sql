@@ -110,6 +110,7 @@ INSERT INTO employee (first_name, last_name, manager_id, role_id, department_id)
 VALUES ('Tami', 'Nevels', 5, 9, 5);
 
 
+
   
   
   
