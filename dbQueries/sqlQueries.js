@@ -5,6 +5,7 @@ const Role = require('../lib/role');
 const Employee = require('../lib/employee');
 
 const quitApplication = (connection) => {
+    console.log('\nGoodbye\n')
     connection.end(connection)
 }
 //build and display table of employees

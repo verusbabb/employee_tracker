@@ -27,7 +27,7 @@ const runInquiry = () => {
         .prompt({
             name: 'action',
             type: 'rawlist',
-            message: 'What would you like to do?',
+            message: 'What would you like to do?\n',
             choices: [
                 'View all employees',
                 'View all roles',
