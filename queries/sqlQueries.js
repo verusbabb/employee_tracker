@@ -3,7 +3,6 @@ const inquirer = require('inquirer');
 const Department = require('../lib/department');
 const Role = require('../lib/role');
 const Employee = require('../lib/employee');
-const employee_tracker = require('../employee_tracker')
 
 //terminate application
 const quitApplication = () => {

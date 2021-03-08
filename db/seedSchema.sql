@@ -1,3 +1,4 @@
+-- schema and seeds all in one
 DROP DATABASE IF EXISTS employee_trackerDB;
 
 CREATE DATABASE employee_trackerDB;
@@ -108,8 +109,6 @@ VALUES ('Blake', 'Hawley', 4, 8, 4);
 
 INSERT INTO employee (first_name, last_name, manager_id, role_id, department_id)
 VALUES ('Tami', 'Nevels', 5, 9, 5);
-
-
 
   
   
