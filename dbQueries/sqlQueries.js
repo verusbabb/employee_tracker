@@ -3,10 +3,12 @@ const inquirer = require('inquirer');
 const Department = require('../lib/department');
 const Role = require('../lib/role');
 const Employee = require('../lib/employee');
+const employee_tracker = require('../employee_tracker')
 
-const quitApplication = (connection) => {
-    console.log('\nGoodbye\n')
-    connection.end(connection)
+//terminate application
+const quitApplication = () => {
+    console.log('GoodBye');
+    process.exit();
 }
 //build and display table of employees
 const viewEmployees = (connection, cb) => {
@@ -32,6 +34,7 @@ const viewEmployees = (connection, cb) => {
     })
 };
 
+//build and display a list of managers
 const managerChoices = (connection, cb) => {
     let query = "SELECT employee.id, employee.first_name, employee.last_name, role.title ";
     query +=
@@ -181,7 +184,6 @@ const addDepartment = (connection, cb) => {
         })
         .then((answer) => {
             let newDepartment = new Department(answer.newDepartmentName)
-            console.log(newDepartment.name);
             connection.query(
                 'INSERT INTO department (department_name) VALUES (?)', newDepartment.name,
                 (err) => {
@@ -206,6 +208,17 @@ const listDepartments = (connection, cb) => {
     });
 };
 
+// const newDepartmentList = (connection, cb) => {
+//     connection.query('SELECT * FROM department', (err, res) => {
+//         if (err) throw err;
+//         console.log('\nHere is an updated list of all department\n');
+//         console.table(res);
+//         if (cb) {
+//             cb()
+//         }
+//     });
+// };
+
 //list all roles, including id, title, and salary
 const listRoles = (connection, cb) => {
     connection.query('SELECT id, title, salary FROM role', (err, res) => {
@@ -215,6 +228,7 @@ const listRoles = (connection, cb) => {
         if (cb) {
             cb()
         }
+        // employee_tracker.runInquiry();
     });
 };
 
@@ -365,4 +379,28 @@ const addEmployee = (connection, cb) => {
         });
 };
 
-module.exports = { viewEmployees, viewDepartments, viewRoles, viewEmployeesByDepartment, viewEmployeesByManager, addDepartment, addRole, listDepartments, updateRole, quitApplication, addEmployee };
+//output total payroll (sum of all existing salaries)
+const totalPayroll = (connection, cb) => {
+    let query = "SELECT sum(salary) AS Total_Payroll_$ ";
+    query +=
+        'FROM employee ';
+    query +=
+        'INNER JOIN role on role.id = employee.role_id ';
+    query +=
+        'INNER JOIN department on department.id = role.department_id ';
+    query +=
+        'LEFT JOIN employee e on employee.manager_id = e.id ';
+    query +=
+        'ORDER BY employee.id';
+    connection.query(query, (err, res) => {
+        if (err) throw err;
+        console.log('\nHere is the total annual payroll for all existing employees\n');
+        console.table(res);
+        if (cb) {
+            cb()
+        }
+
+    })
+};
+
+module.exports = { viewEmployees, viewDepartments, viewRoles, viewEmployeesByDepartment, viewEmployeesByManager, addDepartment, addRole, listDepartments, updateRole, quitApplication, addEmployee, totalPayroll };

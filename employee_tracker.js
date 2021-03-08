@@ -22,6 +22,7 @@ connection.connect((err) => {
 
 });
 
+//primary application questions
 const runInquiry = () => {
     inquirer
         .prompt({
@@ -34,10 +35,11 @@ const runInquiry = () => {
                 'View all departments',
                 'View all employees by department',
                 'View all employees by select manager',
-                'Add an employee',
-                'Update an employee role',
                 'Add a department',
                 'Add a role',
+                'Add an employee',
+                'Update an employee role',
+                'See total annual payroll',
                 'Quit application'
             ],
         })
@@ -63,6 +65,14 @@ const runInquiry = () => {
                     sqlQueries.viewEmployeesByManager(connection, runInquiry);
                     break;
 
+                case 'Add a department':
+                    sqlQueries.addDepartment(connection, runInquiry);
+                    break;
+
+                case 'Add a role':
+                    sqlQueries.addRole(connection, runInquiry);
+                    break;
+
                 case 'Add an employee':
                     sqlQueries.addEmployee(connection, runInquiry);
                     break;
@@ -79,11 +89,17 @@ const runInquiry = () => {
                     sqlQueries.addRole(connection, runInquiry);
                     break;
 
+                case 'See total annual payroll':
+                    sqlQueries.totalPayroll(connection, runInquiry);
+                    break;
+
                 case 'Quit application':
                     sqlQueries.quitApplication(connection)
                     break;
             }
         });
 };
+
+module.exports = { runInquiry };
 
 
