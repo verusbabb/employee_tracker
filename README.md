@@ -1,48 +1,46 @@
 # Employee Tracker
-A handy little web app for taking and storing notes that demonstrates developers core competencies of working within Node/using Express to build an app that relies on API calls between client and server to store/retrieve user notes.
-
-Future feature plans include:
-- unique user ID/log-in
-- storing user data (and app) outside of dev server
-- adding security to storage
+An essential human resources employee data base management app that allows HR to:
+- view all employees in the company
+- view all existing roles in the company
+- view all departments
+- view all employees in each department
+- view all employees of any given manager
+- add a new department
+- add a new role (and define salary and department for the new role)
+- add a new employee (and assign role, manager, and department)
+- update an employee role (and reassign their manager)
+- output the total annual company payroll total
 
 ## *Table of Contents*
 
 - [Description](#description)
 - [Installation](#installation)
-- [Screenshots](#screenshots)
+- [Video Demonstration](#Video-Demo)
 - [Contributing](#contributing)
 - [Contact Developer](#Contact-Developer)
 
 ## *Description*
-This application was developed using Node, Javascript, HTML, CSS, and Express as a NPM dependency.
+This application was developed using Node and JavaScript, with dependencies on Inquirer, MySQL, and cTable.
 
 ## *Installation*
 To install this application, it is recommended that you clone this repo to a folder on your local device.  Open the repo
 in the code editor of your choice (I prefer VS Code).  
 
-Step 1: Open an integrated terminal from index.js and the following command to install all required dependencies:
+Step 1: Open an integrated terminal from inside the project folder and the following command to install all required dependencies:
 ```
 npm i
 ```
 
 Step 2: From the integrated terminal, start the application with the following command:
 ```
-node index.js
+npm start
 ```
 
-Alternatively: Run the application hosted on Heroku:
-(https://verus-note-taker.herokuapp.com/)
+## *Video Demo*
 
-## *Screenshots*
+Click the link below to view a full demo of the application:
 
-A screenshot of the app with a few stored notes:
 
-![Screenshot of HTML Output](https://github.com/verusbabb/Note-Taker/blob/main/Assets/stored_notes.png)
-
-The note app with a stored note displayed on main screen:
-
-![Screenshot of stored note revealed](https://github.com/verusbabb/Note-Taker/blob/main/Assets/stored_note_display.png)
 
 ## *Contributing*
 This is an open source project.  Please email me to contribute or submit push requests.
